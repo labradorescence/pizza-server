@@ -29,6 +29,15 @@ app.use(express.json());
 //ROUTES
 //app.use('/pizzas', require('./routes/pizzas'))
 
+app.get("/", async (req, res) => {
+    try{
+        res.send("This has been responded")
+    }catch(err){
+        console.error(err.message)
+    }
+})
+
+
 //post 
 app.post("/pizzas", async (req, res) => {
     try{
