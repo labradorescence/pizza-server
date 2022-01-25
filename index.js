@@ -55,18 +55,32 @@ app.post("/pizzas", async (req, res) => {
 })
 
 
-//GET ALL
-app.get("/pizzas", async (req, res) => {
+// //GET ALL
+// app.get("/pizzas", getAllPizzas)
+
+// function getAllPizzas (req, res, next){
+//     try{
+//         const allToppings = await pool.query("SELECT * FROM pizzatable");
+//         res.json(allToppings.rows)
+//     }catch(err){
+//         console.error(err.message)
+//     }
+// }
+
+
+//GET ALL for Heroku
+app.get("/pizzas", getAllPizzas)
+
+function getAllPizzas (req, res, next){
     try{
-        const allToppings = await pool.query("SELECT * FROM pizzatable");
+        const allToppings = pool.query("SELECT * FROM pizzatable");
         res.json(allToppings.rows)
     }catch(err){
         console.error(err.message)
     }
-})
+}
 
 //GET one data
-
 app.get("/pizzas/:id", async (req, res) => {
 
     try{
