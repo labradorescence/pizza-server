@@ -78,7 +78,7 @@ app.get("/pizzas", (req, res, next) => {
     }catch(err){
         console.error(err.message)
     }
-}
+})
 
 
 
