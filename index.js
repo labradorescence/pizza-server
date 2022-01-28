@@ -2,10 +2,11 @@ const express = require('express') // requiring express module
 const app = express() // app will have access to express
 const cors = require("cors")
 const pool = require("./db")
+const pg = require("pg");
 
-const exphbs = require("express-handlebars") // view engine for express
-const bodyParser = require("body-parser") //parses HTTP request to JSON obj
-const path = require("path") 
+// const exphbs = require("express-handlebars") // view engine for express
+// const bodyParser = require("body-parser") //parses HTTP request to JSON obj
+// const path = require("path") 
 
 const PORT = 8090;
 //require('cors') // require cors
@@ -55,42 +56,32 @@ app.post("/pizzas", async (req, res) => {
 })
 
 
-// //GET ALL
-app.get("/pizzas", async (req, res) => {
-    try{
-        const allToppings = await pool.query("SELECT * FROM pizzatable");
-        res.json(allToppings.rows)
-    }catch(err){
-        console.error(err.message)
-    }
-})
+// //original GET ALL
+// app.get("/pizzas", async (req, res) => {
+//     try{
+//         const allToppings = await pool.query("SELECT * FROM pizzatable");
+//         res.json(allToppings.rows)
+//     }catch(err){
+//         console.error(err.message)
+//     }
+// })
 
 
 
 //GET ALL for Heroku
-// app.get("/pizzas", getAllPizzas, findApp, renderView, sendJSON);
+app.get("/pizzas", (req, res, next) => {
 
-// function getAllPizzas(req, res, next) {
-//         if(req.session.user) return next();
-//         return new(new NotAuthorizedError());
-// }
-
-//             const allToppings = pool.query("SELECT * FROM pizzatable");
-//             res.json(allToppings.rows)
-//         }catch(err){
-//             next(err)
-//         }
-//     }
-// )
-
-function getAllPizzas (req, res){
     try{
         const allToppings = pool.query("SELECT * FROM pizzatable");
         res.json(allToppings.rows)
+        return res.end();
     }catch(err){
         console.error(err.message)
     }
 }
+
+
+
 
 //GET one data
 app.get("/pizzas/:id", async (req, res) => {
