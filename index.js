@@ -55,23 +55,41 @@ app.post("/pizzas", async (req, res) => {
 })
 
 
-// //GET ALL
-// app.get("/pizzas", getAllPizzas)
-
-// function getAllPizzas (req, res, next){
+// // //GET ALL
+// app.get("/pizzas", async (req, res) => {
 //     try{
 //         const allToppings = await pool.query("SELECT * FROM pizzatable");
 //         res.json(allToppings.rows)
 //     }catch(err){
 //         console.error(err.message)
 //     }
-// }
+// })
+
+// //example
+// router.get("/emailfetch", authCheck, async (req, res, next) => {
+//     try {
+//     //listing messages in users mailbox 
+//       let emailFetch = await gmaiLHelper.getEmails(req.user._doc.profile_id , '/messages', req.user.accessToken)
+//       emailFetch = emailFetch.data
+//       res.send(emailFetch)
+//     } catch (err) {
+//       next(err);
+//     }
+//   })
 
 
 //GET ALL for Heroku
-app.get("/pizzas", getAllPizzas)
+app.get("/pizzas", getAllPizzas, async(req, res, next) => {
+        try{
+            const allToppings = pool.query("SELECT * FROM pizzatable");
+            res.json(allToppings.rows)
+        }catch(err){
+            next(err)
+        }
+    }
+)
 
-function getAllPizzas (req, res, next){
+function getAllPizzas (req, res){
     try{
         const allToppings = pool.query("SELECT * FROM pizzatable");
         res.json(allToppings.rows)
